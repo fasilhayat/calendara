@@ -1,7 +1,7 @@
 # 
 # 🗓️ Calendara
 
-**Calendara** is a lightweight holiday calendar service that provides official holidays and bank closing days for **Denmark**, **Sweden**, and **Norway**. Whether you're scheduling work, planning deployments, or syncing organizational calendars, MythosCalendar ensures you're always aware of when the Nordics rest.
+**Calendara** is a lightweight holiday calendar service that provides official holidays and bank closing days for **Denmark**, **Sweden**, and **Norway**. Whether you're scheduling work, planning deployments, or syncing organizational calendars, Calendara ensures you're always aware of when the Nordics rest. More countries are being added.
 
 ## ✨ Features
 
