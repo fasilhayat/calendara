@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Nykredit.Finance/v17/.suo
+/.vs/Nykredit.Finance
+/Nykredit.Finance.Calendar/bin/Debug/net9.0
+/Nykredit.Finance.Calendar/obj
+*.user
+/.vs/ProjectEvaluation

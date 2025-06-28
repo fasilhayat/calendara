@@ -1,0 +1,38 @@
+services:
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis_holidays
+    ports:
+      - "6379:6379" # Redis port
+      - "8001:8001" # RedisInsight web UI
+    volumes:
+      - redis-data:/data # Persistent Redis storage
+      - ./redis_data.txt:/docker-entrypoint-initdb.d/redis_data.txt # Data to initialize Redis
+      - ./init-redis.sh:/usr/local/bin/init-redis.sh # Custom initialization script
+    entrypoint: ["/bin/bash", "-c", "chmod +x /usr/local/bin/init-redis.sh && /usr/local/bin/init-redis.sh & /entrypoint.sh redis-server"]
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  finance-service:
+    build:
+      context: ./Mycompany.Finance.Calendar
+      dockerfile: Dockerfile
+    container_name: finance_service
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+
+networks:
+  app-network:
+    driver: bridge
