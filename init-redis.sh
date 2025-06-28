@@ -27,5 +27,5 @@ if [ -f /docker-entrypoint-initdb.d/redis_data.txt ]; then
     redis-cli < /docker-entrypoint-initdb.d/redis_data.txt
     echo "Data loaded successfully."
 else
-    echo "redis_data.txt not found. Skipping data loading."
+    echo "redis_data.txt not found. Skipping data loading." 
 fi
