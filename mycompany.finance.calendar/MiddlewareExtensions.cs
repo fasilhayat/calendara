@@ -44,7 +44,7 @@ public static class MiddlewareExtensions
             options.InjectStylesheet("/swagger-ui/darktheme.css");
             options.InjectJavascript("/swagger-ui/custom.js");
             options.RoutePrefix = "swagger"; // Set the Swagger UI endpoint prefix
-            options.DocumentTitle = "Civitas API Documentation";
+            options.DocumentTitle = "Calendara API Documentation";
         });
     }
 
