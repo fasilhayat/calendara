@@ -8,3 +8,6 @@
 /Nykredit.Finance.Calendar/obj
 *.user
 /.vs/ProjectEvaluation
+/.vs/Mycompany.Finance
+/mycompany.finance.calendar/bin/Debug/net9.0
+/mycompany.finance.calendar/obj
