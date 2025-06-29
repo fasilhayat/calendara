@@ -32,11 +32,14 @@ public class CalendarRepository : ICalendarRepository
     /// <returns>A task representing the asynchronous operation, containing the holiday description.</returns>
     public async Task<Holiday?> GetHolidayAsync(string countryCode, DateTime date)
     {
+        // Form the Redis hash key using the year
+        var key = new DataKey($"holiday:{date.Year}");
 
-        // Simulate some asynchronous delay (e.g., fetching from a database or API)
-        await Task.Delay(100); // 100ms delay for simulation
+        // Retrieve the holidays for the specified country code
+        var holidays = await _context.GetHashData<IEnumerable<Holiday>>(key, countryCode);
+        var holiday = holidays?.FirstOrDefault(h => h.Date.Date == date.Date);
 
-        return null;
+        return holiday;
     }
 
     /// <summary>

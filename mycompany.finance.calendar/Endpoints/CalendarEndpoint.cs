@@ -38,7 +38,7 @@ public static class CalendarEndpoint
     private static async Task<IResult> GetHoliday(string countryCode, DateTime date, CalendarService calendarService)
     {
         var holiday = await calendarService.GetHolidayAsync(countryCode, date);
-        return holiday == null ? Results.Json(new { message = "No holidays found in the specified date range" }, statusCode: 200) : Results.Json(holiday, statusCode: 200);
+        return holiday == null ? Results.Json(new { message = $"No holidays found for the specified date: '{date.ToShortDateString()}'" }, statusCode: 200) : Results.Json(holiday, statusCode: 200);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public static class CalendarEndpoint
     {
         var result = await calendarService.GetHolidaysAsync(countryCode, year);
         var holidays = result.ToList();
-        return !holidays.Any() ? Results.Json(new { message = "No holidays found in the specified date range" }, statusCode: 200) : Results.Json(holidays, statusCode: 200);
+        return !holidays.Any() ? Results.Json(new { message = $"No holidays found in the specified year: '{year}'" }, statusCode: 200) : Results.Json(holidays, statusCode: 200);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public static class CalendarEndpoint
         // Check if no holidays were found
         var holidays = result.ToList();
         return !holidays.Any()
-            ? Results.Json(new { message = "No holidays found in the specified date range" }, statusCode: 200)
+            ? Results.Json(new { message = $"No holidays found in the specified date range: '{fromDate.ToShortDateString()}' - '{toDate.ToShortDateString()}'" }, statusCode: 200)
             : Results.Json(holidays, statusCode: 200);
     }
 }
