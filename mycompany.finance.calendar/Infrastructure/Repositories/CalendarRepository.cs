@@ -29,11 +29,8 @@ public class CalendarRepository : ICalendarRepository
     /// <returns>A <see cref="Holiday"/> object if the date matches a holiday or falls on a weekend; otherwise, null.</returns>
     public async Task<Holiday?> GetHolidayOrWeekendAsync(string countryCode, DateTime date)
     {
-        // Handle EU holidays as a special case
         if (countryCode.Equals("EU", StringComparison.OrdinalIgnoreCase))
-        {
             return await GetHolidayForEuOrWeekendAsync(date);
-        }
 
         // Handle holidays for other countries
         return await GetHolidayForCountryOrWeekendAsync(countryCode, date);
