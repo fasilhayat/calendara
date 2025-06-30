@@ -156,8 +156,6 @@ public class CalendarRepository : ICalendarRepository
         return null;
     }
 
-
-
     /// <summary>
     /// Retrieves a sequence of years between two dates, inclusive of the years in both the start and end dates.
     /// </summary>
@@ -165,7 +163,6 @@ public class CalendarRepository : ICalendarRepository
     /// <param name="toDate">The ending date of the range.</param>
     /// <returns>A sequence of years between the two dates, inclusive.</returns>
     /// <exception cref="ArgumentException">Thrown if <paramref name="fromDate"/> is later than <paramref name="toDate"/>.</exception>
-
     private IEnumerable<int> GetYearsBetween(DateTime fromDate, DateTime toDate)
     {
         if (fromDate > toDate)
