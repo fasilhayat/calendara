@@ -14,12 +14,12 @@ public static class CalendarEndpoint
     {
         var calendar = endpoints.MapGroup("/v1/calendar").WithTags("Calendar");
 
-        calendar.MapGet("/holiday/{countryCode}/{date}",
-            static (string countryCode, DateTime date, CalendarService calendarService) => 
-                GetHoliday(countryCode, date, calendarService));
+        calendar.MapGet("/holidayorweekend/{countryCode}/{date}",
+            static (string countryCode, DateTime date, CalendarService calendarService) =>
+                GetHolidayOrWeekend(countryCode, date, calendarService));
 
         calendar.MapGet("/holidays/{countryCode}/{year}",
-            static (string countryCode, int year, CalendarService calendarService) => 
+            static (string countryCode, int year, CalendarService calendarService) =>
                 GetHolidays(countryCode, year, calendarService));
 
         // Endpoint to get holidays within a date range
@@ -27,22 +27,22 @@ public static class CalendarEndpoint
             static (string countryCode, DateTime fromDate, DateTime toDate, CalendarService calendarService) =>
                 GetHolidays(countryCode, fromDate, toDate, calendarService));
     }
-    
+
     /// <summary>
-    /// Gets the access control information of an employee associated with a specific ID.
+    /// Retrieves holiday or weekend for a specified date.
     /// </summary>
     /// <param name="countryCode">In ISO 3166-1 alpha-2 format</param>
-    /// <param name="date">The date to detect holiday</param>
-    /// <param name="calendarService">The service to handle holiday operations.</param>
-    /// <returns>The holiday information.</returns>
-    private static async Task<IResult> GetHoliday(string countryCode, DateTime date, CalendarService calendarService)
+    /// <param name="date">The date to detect bank closing day</param>
+    /// <param name="calendarService">The service to handle holiday and bank closing days operations.</param>
+    /// <returns>The day information.</returns>
+    private static async Task<IResult> GetHolidayOrWeekend(string countryCode, DateTime date, CalendarService calendarService)
     {
-        var holiday = await calendarService.GetHolidayAsync(countryCode, date);
+        var holiday = await calendarService.GetHolidayOrWeekendAsync(countryCode, date);
         return holiday == null ? Results.Json(new { message = $"No holidays found for the specified date: '{date.ToShortDateString()}'" }, statusCode: 200) : Results.Json(holiday, statusCode: 200);
     }
 
     /// <summary>
-    /// Gets the access control information of an employee associated with a specific ID.
+    /// Retrieves holidays within a specified year.
     /// </summary>
     /// <param name="countryCode">In ISO 3166-1 alpha-2 format</param>
     /// <param name="year">The year to detect holiday</param>

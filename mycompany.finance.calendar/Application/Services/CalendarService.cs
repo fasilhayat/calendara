@@ -23,14 +23,14 @@ public class CalendarService
     }
 
     /// <summary>
-    /// Retrieves a holiday description for the specified date.
+    /// Retrieves a holiday or weekend description for the specified date.
     /// </summary>
     /// <param name="countryCode">In ISO 3166-1 alpha-2 format</param>
     /// <param name="date">The date for which the holiday description is to be retrieved.</param>
     /// <returns>A task representing the asynchronous operation, containing the holiday description.</returns>
-    public async Task<Holiday?> GetHolidayAsync(string countryCode, DateTime date)
+    public async Task<Holiday?> GetHolidayOrWeekendAsync(string countryCode, DateTime date)
     {
-        return await _calendarRepository.GetHolidayAsync(countryCode, date);
+        return await _calendarRepository.GetHolidayOrWeekendAsync(countryCode, date);
     }
 
     /// <summary>
