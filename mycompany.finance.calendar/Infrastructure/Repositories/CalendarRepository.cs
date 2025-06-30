@@ -45,9 +45,7 @@ public class CalendarRepository : ICalendarRepository
     public async Task<IEnumerable<Holiday>> GetHolidaysAsync(string countryCode, int year)
     {
         if (countryCode.Equals("EU", StringComparison.OrdinalIgnoreCase))
-        {
             return await GetEuHolidaysAsync(year);
-        }
 
         var key = new DataKey($"holiday:{year}");
         var holidays = await _context.GetHashData<IEnumerable<Holiday>>(key, countryCode);
@@ -64,15 +62,13 @@ public class CalendarRepository : ICalendarRepository
     public async Task<IEnumerable<Holiday>> GetHolidaysAsync(string countryCode, DateTime fromDate, DateTime endDate)
     {
         var years = GetYearsBetween(fromDate, endDate);
-        var allHolidays = new List<Holiday>();
 
-        foreach (var year in years)
-        {
-            var holidaysForYear = await GetHolidaysAsync(countryCode, year);
-            allHolidays.AddRange(holidaysForYear);
-        }
+        var holidayTasks = years.Select(year => GetHolidaysAsync(countryCode, year));
+        var holidayResults = await Task.WhenAll(holidayTasks);
 
-        return allHolidays.Where(h => h.Date >= fromDate && h.Date <= endDate).ToList();
+        return holidayResults
+            .SelectMany(x => x)
+            .Where(x => x.Date >= fromDate && x.Date <= endDate);
     }
 
     /// <summary>
@@ -110,7 +106,6 @@ public class CalendarRepository : ICalendarRepository
     {
         // Simulate async behavior (e.g., database or API call)
         await Task.CompletedTask;
-
         return 
             [
             new()
