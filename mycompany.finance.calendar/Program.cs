@@ -5,7 +5,34 @@ using Prometheus;
 using StackExchange.Redis;
 using System.Globalization;
 
+// Load API key from env var or secret file
+string? apiKey = Environment.GetEnvironmentVariable("API_KEY");
+if (string.IsNullOrWhiteSpace(apiKey))
+{
+    var secretPath = Path.Combine(AppContext.BaseDirectory, "api_key.secret");
+    if (File.Exists(secretPath))
+    {
+        apiKey = File.ReadAllText(secretPath).Trim();
+    }
+}
+
+// Build configuration with the API key added
+var configBuilder = new ConfigurationBuilder()
+    .AddConfiguration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()) // optional
+    .AddEnvironmentVariables();
+
+if (!string.IsNullOrEmpty(apiKey))
+{
+    configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+    {
+        { "API_KEY", apiKey }
+    });
+}
+
+var configuration = configBuilder.Build();
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddConfiguration(configuration);
 
 // App services
 builder.Services.AddServices(builder.Configuration);
@@ -14,11 +41,11 @@ builder.Services.AddAuthorization();
 // Register Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
-    var configuration = builder.Configuration.GetValue<string>("Redis:ConnectionString");
-    if (string.IsNullOrEmpty(configuration))
-        throw new ArgumentNullException($"Redis connection string is missing in configuration.");
+    var redisConnection = builder.Configuration.GetValue<string>("Redis:ConnectionString");
+    if (string.IsNullOrEmpty(redisConnection))
+        throw new ArgumentNullException("Redis connection string is missing in configuration.");
 
-    return ConnectionMultiplexer.Connect(configuration);
+    return ConnectionMultiplexer.Connect(redisConnection);
 });
 
 // Register culture settings
@@ -44,14 +71,16 @@ if (builder.Environment.IsDevelopment() ||
 
 var app = builder.AddHealth().Build();
 
-// --- Prometheus: expose /metrics endpoint ---
-app.UseMetricServer(); // This will expose /metrics automatically
-app.UseHttpMetrics();  // Collects default HTTP metrics for requests
+// Prometheus
+app.UseMetricServer();
+app.UseHttpMetrics();
 
-// Configure middleware
+// Middleware
+app.UseMiddleware<ApiKeyMiddleware>(); // Add your API key middleware here
 app.UseMiddlewareConfiguration(app.Environment, builder.Configuration);
 app.UseRouting();
 app.UseAuthorization();
 app.MapCalendarEndpoints();
 app.UseHealth();
+
 app.Run();
