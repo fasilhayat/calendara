@@ -1,4 +1,4 @@
-﻿namespace Mycompany.Finance.Calendar;
+﻿namespace Mycompany.Finance.Calendar.Infrastructure;
 
 /// <summary>
 /// Middleware to enforce API key authentication for incoming HTTP requests.

@@ -1,6 +1,7 @@
 using Mycompany.Finance.Calendar;
 using Mycompany.Finance.Calendar.Application.Health;
 using Mycompany.Finance.Calendar.Endpoints;
+using Mycompany.Finance.Calendar.Infrastructure;
 using Prometheus;
 using StackExchange.Redis;
 using System.Globalization;

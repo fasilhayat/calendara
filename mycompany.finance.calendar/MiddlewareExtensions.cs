@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Mycompany.Finance.Calendar.Infrastructure;
 
 /// <summary>
 /// Provides extension methods for configuring middleware in the application's request pipeline.
