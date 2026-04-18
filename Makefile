@@ -1,5 +1,5 @@
 # Variables
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker compose
 REDIS_SERVICE = redis
 FINANCE_SERVICE = finance-service
 REDIS_CONTAINER = redis_holidays
