@@ -16,7 +16,7 @@ services:
 
   finance-service:
     build:
-      context: ./Mycompany.Finance.Calendar
+      context: ./mycompany.finance.calendar
       dockerfile: Dockerfile
     container_name: finance_service
     ports:
